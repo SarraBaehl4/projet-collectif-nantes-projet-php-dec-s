@@ -79,5 +79,27 @@
 </div>
 
 </body>
+
+<?php
+
+if(isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['mot_de_passe']) && isset($_POST['role'])) {
+        // Connexion à la base de données
+        $connexion = mysqli_connect("localhost", "root", "", "gestion_collectes");
+        
+        // Récupération du nom, email, mot de passe, role du nouvel utilisateur
+        $nom = $_POST['nom'];
+        $email = $_POST['email'];
+        $mot_de_passe = $_POST['mot_de_passe'];
+        $role = $_POST['role'];
+        
+        // Insertion dans la base de données
+        $sql = "INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES ('$nom', '$email', '$mot_de_passe', '$role')";
+        mysqli_query($connexion, $sql);
+        
+        echo "Données enregistrées !";
+    }
+
+    ?>
+
 </html>
 
