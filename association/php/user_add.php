@@ -1,24 +1,27 @@
 
 <?php
+require "config.php";
 
-if(isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['mot_de_passe']) && isset($_POST['role'])) {
-        // Connexion à la base de données
-        $connexion = mysqli_connect("localhost", "root", "", "gestion_collectes");
-        
-        // Récupération du nom, email, mot de passe, role du nouvel utilisateur
-        $nom = $_POST['nom'];
-        $email = $_POST['email'];
-        $mot_de_passe = $_POST['mot_de_passe'];
-        $role = $_POST['role'];
-        
-        // Insertion dans la base de données
-        $sql = "INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES ('$nom', '$email', '$mot_de_passe', '$role')";
-        mysqli_query($connexion, $sql);
-        
-        echo "Données enregistrées !";
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nom = $_POST["nom"];
+    $email = $_POST["email"];
+    $mot_de_passe = $_POST["mot_de_passe"];
+    $role = $_POST["role"];
+
+    // Insérer un nouveau bénévole
+    $stmt = $pdo->prepare("INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES (?,?,?,?)");
+    if (!$stmt->execute([$nom, $email, $mot_de_passe, $role])) {
+        die('Erreur lors de l\'insertion dans la base de données.');
     }
 
-    ?>
+    header("Location: user_add.php");
+    exit;
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -99,8 +102,6 @@ if(isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['mot_de_passe'
         </div>
     </div>
 </div>
-
 </body>
-
 </html>
 
