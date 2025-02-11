@@ -9,14 +9,30 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
 
-        $stmt = $pdo->prepare("DELETE FROM benevoles WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        // Commencer une transaction
+        $pdo->beginTransaction();
 
-        if ($stmt->execute()) {
+        try {
+            // Désactiver temporairement les vérifications de clés étrangères
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+
+            // Supprimer le bénévole
+            $stmt = $pdo->prepare("DELETE FROM benevoles WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Réactiver les vérifications de clés étrangères
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+
+            // Valider la transaction
+            $pdo->commit();
+
             header("Location: volunteer_list.php?success=1");
             exit();
-        } else {
-            echo "Erreur lors de la suppression.";
+        } catch (Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            $pdo->rollBack();
+            throw $e;
         }
     } catch (PDOException $e) {
         die("Erreur: " . $e->getMessage());
