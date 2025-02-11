@@ -1,3 +1,30 @@
+<?php
+require 'config.php';
+
+try {
+    $stmt = $pdo->query("
+        SELECT id, nom, email, role
+        FROM benevoles
+        ORDER BY nom
+    ");
+
+    $query = $pdo->prepare("SELECT nom FROM benevoles");
+    $query->execute();
+
+    $collectes = $stmt->fetchAll();
+    $admin = $query->fetch(PDO::FETCH_ASSOC);
+    $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
+
+} catch (PDOException $e) {
+    echo "Erreur de base de données : " . $e->getMessage();
+    exit;
+}
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
