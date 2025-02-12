@@ -36,8 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute([$date, $lieu, $benevole_id, $id]);
 
 
-    $stmt = $pdo->prepare("UPDATE dechets_collectes SET type_dechet = ?, quantite_kg = ? WHERE id = ?");
-    $stmt->execute([$dechet, $quantite, $id]);
+    $stmt = $pdo->prepare("INSERT INTO dechets_collectes (id_collecte, type_dechet, quantite_kg)  VALUES (?,?, ?)");
+    if (!$stmt->execute([$id,  $dechet, $quantite ])) {
+        throw new PDOException("Erreur lors de l'insertion dans la base de données.");
+    }
+
+
+
+    // $stmt = $pdo->prepare("INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES (?,?,?,?)");//prepare la requête d'insertion
 
 
     header("Location: collection_list.php");
@@ -122,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700"> Quantités (kg):</label>
-                        <input type="number" value="<?php $quantite ?>" required
+                        <input type="float" name = "quantite" value="<?php $quantite ?>" required
                             class="w-full p-2 border border-gray-300 rounded-lg">
                     </div>
                     <div class="flex justify-end space-x-4">

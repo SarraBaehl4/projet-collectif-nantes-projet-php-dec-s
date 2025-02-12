@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $benevole_id = $_POST["benevole"];  // ID du bénévole choisi, modifié ici pour correspondre au formulaire
 
     // Insérer la collecte avec le bénévole sélectionné
-    $stmt = $pdo->prepare("INSERT INTO collectes (date_collecte, lieu, id_benevole) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO collectes (date_collecte, lieu, id_benevole) VALUES (?, ?, ?) " );
     if (!$stmt->execute([$date, $lieu, $benevole_id])) {
         die('Erreur lors de l\'insertion dans la base de données.');
     }
@@ -97,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <a href="collection_list.php" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow">Annuler</a>
                     <button type="submit" class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow">
                         ➕ Ajouter
+
                     </button>
                 </div>
             </form>
