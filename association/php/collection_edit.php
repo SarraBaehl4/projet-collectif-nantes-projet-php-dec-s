@@ -24,32 +24,28 @@ $stmt_benevoles = $pdo->prepare("SELECT id, nom FROM benevoles ORDER BY nom");
 $stmt_benevoles->execute();
 $benevoles = $stmt_benevoles->fetchAll();
 
-// Mettre à jour la collecte
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $date = $_POST["date"];
-    $lieu = $_POST["lieu"];
-    $dechet = $_POST["dechet"];
-    $quantite = $_POST["quantite"];
-    $benevole_id = $_POST["benevole"]; // Récupérer l'ID du bénévole sélectionné
-
-    $stmt = $pdo->prepare("UPDATE collectes SET date_collecte = ?, lieu = ?, id_benevole = ? WHERE id = ?");
-    $stmt->execute([$date, $lieu, $benevole_id, $id]);
-
-
-    $stmt = $pdo->prepare("INSERT INTO dechets_collectes (id_collecte, type_dechet, quantite_kg)  VALUES (?,?, ?)");
-    if (!$stmt->execute([$id,  $dechet, $quantite ])) {
-        throw new PDOException("Erreur lors de l'insertion dans la base de données.");
+    // Ajoute un champ supplémentaire après chaque soumission
+    if (isset($_POST["ajouter_dechet"])) {
+        $_POST["dechet"][] = "";
+        $_POST["quantite"][] = "";
     }
-
-
-
-    // $stmt = $pdo->prepare("INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES (?,?,?,?)");//prepare la requête d'insertion
-
-
+    // Mise à jour de la collecte
+    $stmt = $pdo->prepare("UPDATE collectes SET date_collecte = ?, lieu = ?, id_benevole = ? WHERE id = ?");
+    $stmt->execute([$_POST["date"], $_POST["lieu"], $_POST["benevole"], $id]);
+    // Insérer plusieurs déchets
+    if (!empty($_POST["dechet"]) && !empty($_POST["quantite"])) {
+        $stmt = $pdo->prepare("INSERT INTO dechets_collectes (id_collecte, type_dechet, quantite_kg) VALUES (?, ?, ?)");
+        foreach ($_POST["dechet"] as $key => $dechet) {
+            $quantite = $_POST["quantite"][$key];
+            if (is_numeric($quantite) && $quantite > 0) {
+                $stmt->execute([$id, $dechet, $quantite]);
+            }
+        }
+    }
     header("Location: collection_list.php");
     exit;
 }
-
 
 ?>
 
@@ -116,20 +112,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium">Dechets</label>
-                        <select name="dechet"
-                            class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="papier">papier</option>
-                            <option value="plastique">plastique</option>
-                            <option value="metal">métal</option>
-                            <option value="organique">organique</option>
-                            <option value="verre">verre</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700"> Quantités (kg):</label>
-                        <input type="float" name = "quantite" value="<?php $quantite ?>" required
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                        <label class="block text-gray-700 font-medium">Dechets :</label>
+
+                        <?php
+                        for ($i = 0; $i < 5; $i++):
+                            $dechetValue = $_POST["dechet"][$i] ?? "";
+                            $quantiteValue = $_POST["quantite"][$i] ?? "";
+                        ?>
+                            <div class="flex space-x-4 mt-2">
+                                <select name="dechet[]"
+                                    class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option> Selectionne un type de déchet </option>
+                                    <option value="papier" <?= $dechetValue == "papier" ? "selected" : "" ?>>papier</option>
+                                        <option value="plastique" <?= $dechetValue == "plastique" ? "selected" : "" ?>>plastique</option>
+                                        <option value="metal" <?= $dechetValue == "metal" ? "selected" : "" ?>>métal</option>
+                                        <option value="organique" <?= $dechetValue == "organique" ? "selected" : "" ?>>organique</option>
+                                        <option value="verre" <?= $dechetValue == "verre" ? "selected" : "" ?>>verre</option>
+                                </select>
+                                <input type="number" step="0.01" name="quantite[]" value="<?= htmlspecialchars($quantiteValue) ?>"class="p-2 border border-gray-300 rounded-lg w-24" placeholder="kg">
+                            </div>
+                        <?php endfor; ?>
                     </div>
                     <div class="flex justify-end space-x-4">
                         <a href="collection_list.php" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Annuler</a>
