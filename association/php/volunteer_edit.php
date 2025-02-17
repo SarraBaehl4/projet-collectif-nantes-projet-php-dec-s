@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
 
             <li><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i
-                        class="fas fa-tachometer-alt mr-3"></i> Tableau de bord</a></li>
+                        class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
             <li><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i
                         class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
             <li>
