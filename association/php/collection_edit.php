@@ -63,43 +63,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="flex h-screen">
         <!-- Dashboard -->
-        <div class="bg-cyan-200 text-white w-64 p-6">
+        <nav class="bg-cyan-200 text-white w-64 p-6">
             <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
-                <ul role="list">
-                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
-                </ul>
+            <ul role="list">
+                <li role="listitem"><a href="collection_list.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i>
+                        Liste des collectes</a></li>
+                <li role="listitem"><a href="collection_add.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i>
+                        Ajouter une collecte</a></li>
+                <li role="listitem"><a href="volunteer_list.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i>
+                        Liste des bénévoles</a></li>
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                            class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                            class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+            </ul>
             <div class="mt-6">
-                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md">
+                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2"
+                    aria-label="Déconnexion">
                     Déconnexion
                 </button>
             </div>
-        </div>
+        </nav>
 
         <!-- Contenu principal -->
-        <div class="flex-1 p-8 overflow-y-auto">
+        <section class="flex-1 p-8 overflow-y-auto">
             <h1 class="text-4xl font-bold text-blue-900 mb-6">Modifier une collecte</h1>
 
             <!-- Formulaire -->
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="bg-white p-6">
                 <form method="POST" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Date :</label>
-                        <input type="date" name="date" value="<?= htmlspecialchars($collecte['date_collecte']) ?>" required
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                        <input type="date" name="date" value="<?= htmlspecialchars($collecte['date_collecte']) ?>"
+                            required class="w-full p-2 border border-gray-300">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Lieu :</label>
                         <input type="text" name="lieu" value="<?= htmlspecialchars($collecte['lieu']) ?>" required
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                            class="w-full p-2 border border-gray-300">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Bénévole :</label>
-                        <select name="benevole" required
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                        <select name="benevole" required class="w-full p-2 border border-gray-300">
                             <option value="" disabled selected>Sélectionnez un·e bénévole</option>
                             <?php foreach ($benevoles as $benevole): ?>
                                 <option value="<?= $benevole['id'] ?>" <?= $benevole['id'] == $collecte['id_benevole'] ? 'selected' : '' ?>>
@@ -115,28 +123,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         for ($i = 0; $i < 5; $i++):
                             $dechetValue = $_POST["dechet"][$i] ?? "";
                             $quantiteValue = $_POST["quantite"][$i] ?? "";
-                        ?>
+                            ?>
                             <div class="flex space-x-4 mt-2">
                                 <select name="dechet[]"
-                                    class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full mt-2 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option> Selectionne un type de déchet </option>
                                     <option value="papier" <?= $dechetValue == "papier" ? "selected" : "" ?>>papier</option>
-                                        <option value="plastique" <?= $dechetValue == "plastique" ? "selected" : "" ?>>plastique</option>
-                                        <option value="metal" <?= $dechetValue == "metal" ? "selected" : "" ?>>métal</option>
-                                        <option value="organique" <?= $dechetValue == "organique" ? "selected" : "" ?>>organique</option>
-                                        <option value="verre" <?= $dechetValue == "verre" ? "selected" : "" ?>>verre</option>
+                                    <option value="plastique" <?= $dechetValue == "plastique" ? "selected" : "" ?>>plastique
+                                    </option>
+                                    <option value="metal" <?= $dechetValue == "metal" ? "selected" : "" ?>>métal</option>
+                                    <option value="organique" <?= $dechetValue == "organique" ? "selected" : "" ?>>organique
+                                    </option>
+                                    <option value="verre" <?= $dechetValue == "verre" ? "selected" : "" ?>>verre</option>
                                 </select>
-                                <input type="number" step="0.01" name="quantite[]" value="<?= htmlspecialchars($quantiteValue) ?>"class="p-2 border border-gray-300 rounded-lg w-24" placeholder="kg">
+                                <input type="number" step="0.01" name="quantite[]"
+                                    value="<?= htmlspecialchars($quantiteValue) ?>" class="p-2 border border-gray-300 w-24"
+                                    placeholder="kg">
                             </div>
                         <?php endfor; ?>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <a href="collection_list.php" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Annuler</a>
-                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2 rounded-lg">Modifier</button>
+                        <a href="collection_list.php" class="bg-gray-500 text-white px-4 py-2">Annuler</a>
+                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2">Modifier</button>
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 
 </body>
