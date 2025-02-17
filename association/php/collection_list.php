@@ -2,60 +2,52 @@
 require 'config.php';
 
 try {
+    
     $stmt = $pdo->query("
-        SELECT c.id, c.date_collecte, c.lieu, b.nom
+        SELECT c.id, c.date_collecte, c.lieu, b.nom,
+               (SELECT SUM(d.quantite_kg)
+                FROM dechets_collectes d
+                WHERE d.id_collecte = c.id) as total_dechets
         FROM collectes c
         LEFT JOIN benevoles b ON c.id_benevole = b.id
         ORDER BY c.date_collecte DESC
     ");
-
-    $query = $pdo->prepare("SELECT nom FROM benevoles WHERE role = 'admin' LIMIT 1");
-    $query->execute();
-
     $collectes = $stmt->fetchAll();
-    $admin = $query->fetch(PDO::FETCH_ASSOC);
-    $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
-
-
-
+    
+    
     $totalDechetsStmt = $pdo->query("
-    SELECT SUM(d.quantite_kg) as total_general
-    FROM dechets_collectes d
-    INNER JOIN collectes c ON c.id = d.id_collecte
+        SELECT SUM(d.quantite_kg) as total_general
+        FROM dechets_collectes d
+        INNER JOIN collectes c ON c.id = d.id_collecte
     ");
     
     $totalDechets = $totalDechetsStmt->fetch(PDO::FETCH_ASSOC);
     $total_dechets = $totalDechets['total_general'] ?? 0;
 
-
-    $derniereCollecteId = $collectes[0]['id'];
-    $dechetsStmt = $pdo->prepare("
-        SELECT d.type_dechet, SUM(d.quantite_kg) as quantite_totale
-        FROM dechets_collectes d
-        INNER JOIN collectes c ON c.id = d.id_collecte
-        WHERE c.id = :id
-        GROUP BY d.type_dechet
-    ");
     
-    $dechetsStmt->execute(['id' => $derniereCollecteId]);
-    $dechets = $dechetsStmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $derniere_collecte_total = 0;
-    
-    foreach ($dechets as $dechet) {
-        if (isset($dechet['quantite_totale'])) {
-            $derniere_collecte_total += $dechet['quantite_totale'];
+    if (!empty($collectes)) {
+        $derniereCollecteId = $collectes[0]['id'];
+        $dechetsStmt = $pdo->prepare("
+            SELECT d.type_dechet, SUM(d.quantite_kg) as quantite_totale
+            FROM dechets_collectes d
+            INNER JOIN collectes c ON c.id = d.id_collecte
+            WHERE c.id = :id
+            GROUP BY d.type_dechet
+        ");
+        
+        $dechetsStmt->execute(['id' => $derniereCollecteId]);
+        $dechets = $dechetsStmt->fetchAll(PDO::FETCH_ASSOC);
+        $derniere_collecte_total = 0;
+        foreach ($dechets as $dechet) {
+            if (isset($dechet['quantite_totale'])) {
+                $derniere_collecte_total += $dechet['quantite_totale'];
+            }
         }
     }
-
 } catch (PDOException $e) {
     echo "Erreur de base de données : " . $e->getMessage();
     exit;
 }
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 ?>
 
 <!DOCTYPE html>
@@ -130,6 +122,7 @@ error_reporting(E_ALL);
                     <th class="py-3 px-4 text-left">Date</th>
                     <th class="py-3 px-4 text-left">Lieu</th>
                     <th class="py-3 px-4 text-left">Bénévole Responsable</th>
+                    <th class="py-3 px-4 text-left">Total déchets collectés</th>
                     <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
                 </thead>
@@ -141,6 +134,7 @@ error_reporting(E_ALL);
                         <td class="py-3 px-4">
                             <?= $collecte['nom'] ? htmlspecialchars($collecte['nom']) : 'Aucun bénévole' ?>
                         </td>
+                        <td class="py-3 px-4"><?= number_format($collecte['total_dechets'] ?? 0, 2) ?> kg</td>
                         <td class="py-3 px-4 flex space-x-2">
                         <a href="collection_details.php?id=<?= $collecte['id'] ?>" class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                                  📄Details
