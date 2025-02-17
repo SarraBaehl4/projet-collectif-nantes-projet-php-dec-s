@@ -16,6 +16,38 @@ try {
     $admin = $query->fetch(PDO::FETCH_ASSOC);
     $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
 
+
+
+    $totalDechetsStmt = $pdo->query("
+    SELECT SUM(d.quantite_kg) as total_general
+    FROM dechets_collectes d
+    INNER JOIN collectes c ON c.id = d.id_collecte
+    ");
+    
+    $totalDechets = $totalDechetsStmt->fetch(PDO::FETCH_ASSOC);
+    $total_dechets = $totalDechets['total_general'] ?? 0;
+
+
+    $derniereCollecteId = $collectes[0]['id'];
+    $dechetsStmt = $pdo->prepare("
+        SELECT d.type_dechet, SUM(d.quantite_kg) as quantite_totale
+        FROM dechets_collectes d
+        INNER JOIN collectes c ON c.id = d.id_collecte
+        WHERE c.id = :id
+        GROUP BY d.type_dechet
+    ");
+    
+    $dechetsStmt->execute(['id' => $derniereCollecteId]);
+    $dechets = $dechetsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $derniere_collecte_total = 0;
+    
+    foreach ($dechets as $dechet) {
+        if (isset($dechet['quantite_totale'])) {
+            $derniere_collecte_total += $dechet['quantite_totale'];
+        }
+    }
+
 } catch (PDOException $e) {
     echo "Erreur de base de données : " . $e->getMessage();
     exit;
@@ -76,16 +108,17 @@ error_reporting(E_ALL);
                 <h3 class="text-xl font-semibold text-gray-800 mb-3">Total des Collectes</h3>
                 <p class="text-3xl font-bold text-blue-600"><?= count($collectes) ?></p>
             </div>
+            <!-- Bénévole Responsable -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">Poids Total des Collectes</h3>
+                <p class="text-3xl font-bold text-blue-600"><?= number_format($total_dechets, 2) ?> kg</p>
+            </div>
             <!-- Dernière collecte -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h3 class="text-xl font-semibold text-gray-800 mb-3">Dernière Collecte</h3>
                 <p class="text-lg text-gray-600"><?= htmlspecialchars($collectes[0]['lieu']) ?></p>
                 <p class="text-lg text-gray-600"><?= date('d/m/Y', strtotime($collectes[0]['date_collecte'])) ?></p>
-            </div>
-            <!-- Bénévole Responsable -->
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-semibold text-gray-800 mb-3">Bénévole Admin</h3>
-                <p class="text-lg text-gray-600"><?= $adminNom ?></p>
+                <p class="text-lg text-gray-600"><?= number_format($derniere_collecte_total, 2) ?> kg</p>
             </div>
         </div>
 
