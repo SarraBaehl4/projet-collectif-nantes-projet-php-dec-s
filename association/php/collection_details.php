@@ -1,6 +1,6 @@
 <?php
 require 'config.php';
-
+require 'theme.php';
 $id = isset($_GET["id"]) ? intval($_GET["id"]) : 0;
 
 $stmt = $pdo->prepare("
@@ -46,21 +46,21 @@ error_reporting(E_ALL);
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
     <div class="flex h-screen">
         <!-- Barre de navigation -->
-        <nav class="bg-cyan-200 text-white w-64 p-6">
-            <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+        <nav class="<?=$theme['associationName']?>">
+            <h2 class="text-6xl font-bold mb-6">Littoral Propre</h2>
                 <ul role="list">
-                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
+                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
+                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
+                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
                 </ul>
             <div class="mt-6">
                 <button onclick="logout()"
-                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2" aria-label="Déconnexion">
+                    class="<?=$theme['logout']?>" aria-label="Déconnexion">
                     Déconnexion
                 </button>
             </div>
@@ -69,7 +69,7 @@ error_reporting(E_ALL);
         <!-- Contenu principal -->
         <section class="flex-1 p-8 overflow-y-auto">
             <!-- Titre -->
-            <h1 class="text-4xl font-bold text-blue-800 mb-6">Détail de la collecte</h1>
+            <h1 class="<?=$theme['h1']?>">Détail de la collecte</h1>
             <p>
             <tr class="bg-gray-200">
                 <th class="border border-gray-300 px-4 py-2"><strong>Date :</strong>
@@ -86,7 +86,7 @@ error_reporting(E_ALL);
             </p>
             <!-- Message de notification -->
             <?php if (isset($_GET['message'])): ?>
-                <div class="bg-green-100 text-green-800 p-4 mb-6">
+                <div class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
                     <?= htmlspecialchars($_GET['message']) ?>
                 </div>
             <?php endif; ?>
@@ -96,7 +96,7 @@ error_reporting(E_ALL);
             <!-- Cartes d'informations par type -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <?php foreach ($dechets as $dechet): ?>
-                    <div class="bg-white p-6">
+                    <div class="<?=$theme['tableBg']?> p-6">
                         <h3 class="text-xl font-semibold text-gray-800 mb-3">
                             Déchet <?= htmlspecialchars($dechet['type_dechet']) ?>
                         </h3>
@@ -108,11 +108,11 @@ error_reporting(E_ALL);
             </div>
             <!-- Carte du total -->
             <div class="mb-8">
-                <div class="bg-green-50 p-6 border-2 border-green-500">
+                <div class="bg-blue-50 p-6 border-2 border-blue-600">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">
                         Total des déchets collectés
                     </h3>
-                    <p class="text-4xl font-bold text-green-600">
+                    <p class="text-4xl font-bold text-blue-600">
                         <?= number_format($total_dechets, 1) ?> kg
                     </p>
                 </div>
