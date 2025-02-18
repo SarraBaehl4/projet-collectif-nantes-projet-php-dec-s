@@ -1,3 +1,8 @@
+<?php
+require 'config.php';
+require 'theme.php';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,20 +12,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
 <div class="flex h-screen">
     <!-- Barre de navigation -->
-    <nav class="bg-cyan-200 text-white w-64 p-6">
-        <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+    <nav class="<?=$theme['associationName']?>">
+        <h2 class="text-2xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
-                <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+                <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
+                <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
+                <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
             </ul>
         <div class="mt-6">
-            <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2" aria-label="Déconnexion">
+            <button onclick="logout()" class="<?=$theme['logout']?>" aria-label="Déconnexion">
                 Déconnexion
             </button>
         </div>
@@ -29,12 +34,12 @@
     <!-- Contenu principal -->
     <section class="flex-1 p-8 overflow-y-auto">
         <!-- Titre -->
-        <h1 class="text-4xl font-bold text-blue-800 mb-6">Liste des Bénévoles</h1>
+        <h1 class="<?=$theme['h1']?>">Liste des Bénévoles</h1>
 
         <!-- Tableau des admin -->
-        <div class="overflow-hidden bg-white">
+        <div class="overflow-hidden <?=$theme['tableBg']?>">
             <table class="w-full table-auto border-collapse">
-                <thead class="bg-blue-800 text-white">
+                <thead class="<?=  $theme['tableHeader']?>">
                 <tr>
                     <th class="py-3 px-4 text-left">Nom</th>
                     <th class="py-3 px-4 text-left">Email</th>
@@ -49,11 +54,11 @@
                     <td class="py-3 px-4">Admin</td>
                     <td class="py-3 px-4 flex space-x-2">
                         <a href="#"
-                           class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                           class="<?=  $theme['buttons']?>">
                             ✏️ Modifier
                         </a>
                         <a href="#"
-                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">
+                           class="<?=  $theme['deleteButton']?>">
                             🗑️ Supprimer
                         </a>
                     </td>
