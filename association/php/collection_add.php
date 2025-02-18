@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!-- Boutons -->
                     <div class="flex justify-end space-x-4">
                         <a href="collection_list.php" class="bg-red-700 hover:bg-red-800 text-cyan-50 px-4 py-2">Annuler</a>
-                        <button type="submit" class="<?=$theme['sidebarBg']?> hover:bg-cyan-600 text-white px-4 py-2">
+                        <button type="submit" class="<?=$theme['sidebarBg']?> hover:bg-cyan-600 text-cyan-50 px-4 py-2">
                             ➕ Ajouter
 
                         </button>
