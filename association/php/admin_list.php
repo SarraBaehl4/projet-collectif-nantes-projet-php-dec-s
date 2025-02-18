@@ -15,7 +15,7 @@ require 'theme.php';
 <body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
 <div class="flex h-screen">
     <!-- Barre de navigation -->
-    <div class="<?=$theme['associationName']?>">
+    <nav class="<?=$theme['associationName']?>">
         <h2 class="text-2xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
                 <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
@@ -25,7 +25,7 @@ require 'theme.php';
                 <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
             </ul>
         <div class="mt-6">
-            <button onclick="logout()" class="<?=$theme['logout']?>" aria-label="Déconnexion>
+            <button onclick="logout()" class="<?=$theme['logout']?>" aria-label="Déconnexion">
                 Déconnexion
             </button>
         </div>
