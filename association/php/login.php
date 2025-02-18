@@ -1,7 +1,6 @@
 <?php
-session_start(); // Démarrer la session
+session_start();
 require 'config.php';
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -16,11 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["nom"] = $user["nom"];
         $_SESSION["role"] = $user["role"];
-
-        header("Location: collection_list.php");
-        exit;
-    } else {
-        $error = "Identifiants incorrects";
+   // Assurez-vous qu'aucun contenu n'a été envoyé avant la redirection
+   if (!headers_sent()) {
+    header("Location: collection_list.php");
+    exit;
+} else {
+    echo "<script>window.location.href='collection_list.php';</script>";
+    exit;
+}
     }
 }
 ?>

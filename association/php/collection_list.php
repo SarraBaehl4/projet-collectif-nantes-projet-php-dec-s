@@ -1,11 +1,21 @@
 <?php
-require 'config.php';
 
-try { 
-    $limit = 5;
-    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $offset = ($page - 1) * $limit;
-    $stmt = $pdo->prepare("
+session_start();
+// Activer l'affichage des erreurs PHP
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// Vérifie si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+require 'config.php';
+    try {
+        $limit = 5;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+        $stmt = $pdo->prepare("
         SELECT c.id, c.date_collecte, c.lieu, b.nom,
         (SELECT SUM(d.quantite_kg)
                 FROM dechets_collectes d
@@ -15,47 +25,47 @@ try {
         ORDER BY c.date_collecte DESC
         LIMIT :limit OFFSET :offset
     ");
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
 
-    $collectes = $stmt->fetchAll();
-    $totalDechetsStmt = $pdo->query("
+        $collectes = $stmt->fetchAll();
+        $totalDechetsStmt = $pdo->query("
     SELECT SUM(d.quantite_kg) as total_general
     FROM dechets_collectes d
     INNER JOIN collectes c ON c.id = d.id_collecte
 ");
 
-$totalDechets = $totalDechetsStmt->fetch(PDO::FETCH_ASSOC);
-$total_dechets = $totalDechets['total_general'] ?? 0;
+        $totalDechets = $totalDechetsStmt->fetch(PDO::FETCH_ASSOC);
+        $total_dechets = $totalDechets['total_general'] ?? 0;
 
 
-if (!empty($collectes)) {
-    $derniereCollecteId = $collectes[0]['id'];
-    $dechetsStmt = $pdo->prepare("
+        if (!empty($collectes)) {
+            $derniereCollecteId = $collectes[0]['id'];
+            $dechetsStmt = $pdo->prepare("
         SELECT d.type_dechet, SUM(d.quantite_kg) as quantite_totale
         FROM dechets_collectes d
         INNER JOIN collectes c ON c.id = d.id_collecte
         WHERE c.id = :id
         GROUP BY d.type_dechet
     ");
-    
-    $dechetsStmt->execute(['id' => $derniereCollecteId]);
-    $dechets = $dechetsStmt->fetchAll(PDO::FETCH_ASSOC);
-    $derniere_collecte_total = 0;
-    foreach ($dechets as $dechet) {
-        if (isset($dechet['quantite_totale'])) {
-            $derniere_collecte_total += $dechet['quantite_totale'];
+
+            $dechetsStmt->execute(['id' => $derniereCollecteId]);
+            $dechets = $dechetsStmt->fetchAll(PDO::FETCH_ASSOC);
+            $derniere_collecte_total = 0;
+            foreach ($dechets as $dechet) {
+                if (isset($dechet['quantite_totale'])) {
+                    $derniere_collecte_total += $dechet['quantite_totale'];
+                }
+            }
         }
+        $totalStmt = $pdo->query("SELECT COUNT(*) FROM collectes");
+        $totalCollectes = $totalStmt->fetchColumn();
+        $totalPages = ceil($totalCollectes / $limit);
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        exit;
     }
-}
-$totalStmt = $pdo->query("SELECT COUNT(*) FROM collectes");
-    $totalCollectes = $totalStmt->fetchColumn();
-    $totalPages = ceil($totalCollectes / $limit);
-} catch (PDOException $e) {
-    echo "Erreur de base de données : " . $e->getMessage();
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -181,6 +191,13 @@ $totalStmt = $pdo->query("SELECT COUNT(*) FROM collectes");
             </div>
     </div>
 </section>
+    <script>
+function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        window.location.href = 'logout.php';
+    }
+}
+</script>
 </body>
 
 </html>
