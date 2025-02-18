@@ -105,7 +105,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </div>
 </section>
-
+<script>
+function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        window.location.href = 'logout.php';
+    }
+}
+</script>
 </body>
 
 </html>

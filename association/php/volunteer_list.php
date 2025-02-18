@@ -129,6 +129,13 @@ try {
             </div>
         </section>
     </div>
+    <script>
+function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        window.location.href = 'logout.php';
+    }
+}
+</script>
 </body>
 
 </html>
