@@ -1,6 +1,6 @@
 <?php
 require 'config.php';
-
+require 'theme.php';
 // Vérifier si un ID de collecte est fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: collection_list.php");
@@ -59,29 +59,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body class="?=$theme['bgColor']?> && <?=$theme['textColor']?>">
 
     <div class="flex h-screen">
         <!-- Dashboard -->
-        <nav class="bg-cyan-200 text-white w-64 p-6">
-            <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+        <nav class="<?=$theme['associationName']?>">
+            <h2 class="text-2xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
                 <li role="listitem"><a href="collection_list.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i>
+                        class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i>
                         Liste des collectes</a></li>
                 <li role="listitem"><a href="collection_add.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i>
+                        class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i>
                         Ajouter une collecte</a></li>
                 <li role="listitem"><a href="volunteer_list.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i>
+                        class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i>
                         Liste des bénévoles</a></li>
-                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-cogs mr-3"></i> Mon compte</a></li>
             </ul>
             <div class="mt-6">
-                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2"
+                <button onclick="logout()" class="<?=$theme['logout']?>"
                     aria-label="Déconnexion">
                     Déconnexion
                 </button>
@@ -90,23 +90,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Contenu principal -->
         <section class="flex-1 p-8 overflow-y-auto">
-            <h1 class="text-4xl font-bold text-blue-900 mb-6">Modifier une collecte</h1>
+            <h1 class="<?=$theme['h1']?>">Modifier une collecte</h1>
 
             <!-- Formulaire -->
-            <div class="bg-white p-6">
+            <div class="<?=$theme['tableBg']?> p-6">
                 <form method="POST" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Date :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">Date :</label>
                         <input type="date" name="date" value="<?= htmlspecialchars($collecte['date_collecte']) ?>"
                             required class="w-full p-2 border border-gray-300">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Lieu :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">Lieu :</label>
                         <input type="text" name="lieu" value="<?= htmlspecialchars($collecte['lieu']) ?>" required
                             class="w-full p-2 border border-gray-300">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Bénévole :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">Bénévole :</label>
                         <select name="benevole" required class="w-full p-2 border border-gray-300">
                             <option value="" disabled selected>Sélectionnez un·e bénévole</option>
                             <?php foreach ($benevoles as $benevole): ?>
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium">Dechets :</label>
+                        <label class="block <?=$theme['textColor']?> font-medium">Dechets :</label>
 
                         <?php
                         for ($i = 0; $i < 5; $i++):
@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                     <div class="flex justify-end space-x-4">
                         <a href="collection_list.php" class="bg-gray-500 text-white px-4 py-2">Annuler</a>
-                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2">Modifier</button>
+                        <button type="submit" class="<?=  $theme['buttons']?>">Modifier</button>
                     </div>
                 </form>
             </div>
