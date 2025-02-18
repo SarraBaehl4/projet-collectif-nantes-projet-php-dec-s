@@ -11,6 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 require 'config.php';
+require 'theme.php';
     try {
         $limit = 5;
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -78,29 +79,29 @@ require 'config.php';
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
-
-<section class="bg-gray-100 text-gray-900">
-    <div class="flex h-screen">
+<body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
+<div class="flex h-screen">
+    
         <!-- Barre de navigation -->
-        <nav class="bg-cyan-200 text-white w-64 p-6">
-            <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+        <nav class="<?=$theme['associationName']?>">
+            <h2 class="text-2xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
                 <li role="listitem"><a href="collection_list.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i>
+                        class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i>
                         Liste des collectes</a></li>
                 <li role="listitem"><a href="collection_add.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i>
+                        class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i>
                         Ajouter une collecte</a></li>
                 <li role="listitem"><a href="volunteer_list.php"
-                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i>
+                        class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i>
                         Liste des bénévoles</a></li>
-                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3<?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-cogs mr-3"></i> Mon compte</a></li>
             </ul>
             <div class="mt-6">
-                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2"
+                <button onclick="logout()" class="<?=$theme['logout']?>"
                     aria-label="Déconnexion">
                     Déconnexion
                 </button>
@@ -109,11 +110,11 @@ require 'config.php';
 
         <!-- Contenu principal -->
         <section class="flex-1 p-8 overflow-y-auto">
-            <h1 class="text-4xl font-bold text-blue-800 mb-6">Liste des Collectes de Déchets</h1>
+            <h1 class="<?=$theme['h1']?>">Liste des Collectes de Déchets</h1>
 
             <!-- Message de notification -->
             <?php if (isset($_GET['message'])): ?>
-                <div class="bg-green-100 text-green-800 p-4 mb-6">
+                <div class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>"">
                     <?= htmlspecialchars($_GET['message']) ?>
                 </div>
             <?php endif; ?>
@@ -121,28 +122,28 @@ require 'config.php';
             <!-- Cartes d'informations -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <!-- Nombre total de collectes -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Total des Collectes</h3>
-                    <p class="text-3xl font-bold text-blue-600"><?= count($collectes) ?></p>
+                <div class="<?=$theme['bgCard']?>">
+                    <h3 class="text-xl font-semibold text-cyan-800 mb-3">Total des Collectes</h3>
+                    <p class="text-3xl font-bold text-cyan-600"><?= count($collectes) ?></p>
                 </div>
                 <!-- Bénévole Responsable -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Poids Total des Collectes</h3>
-                    <p class="text-3xl font-bold text-blue-600"><?= number_format($total_dechets, 2) ?> kg</p>
+                <div class="<?=$theme['bgCard']?>">
+                    <h3 class="text-xl font-semibold text-cyan-800 mb-3">Poids Total des Collectes</h3>
+                    <p class="text-3xl font-bold text-cyan-600"><?= number_format($total_dechets, 2) ?> kg</p>
                 </div>
                 <!-- Dernière collecte -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Dernière Collecte</h3>
-                    <p class="text-lg text-gray-600"><?= htmlspecialchars($collectes[0]['lieu']) ?></p>
-                    <p class="text-lg text-gray-600"><?= date('d/m/Y', strtotime($collectes[0]['date_collecte'])) ?></p>
-                    <p class="text-lg text-gray-600"><?= number_format($derniere_collecte_total, 2) ?> kg</p>
+                <div class="<?=$theme['bgCard']?>">
+                    <h3 class="text-xl font-semibold text-cyan-800 mb-3">Dernière Collecte</h3>
+                    <p class="text-xl font-bold text-cyan-600"><?= htmlspecialchars($collectes[0]['lieu']) ?></p>
+                    <p class="text-xl font-bold text-cyan-600"><?= date('d/m/Y', strtotime($collectes[0]['date_collecte'])) ?></p>
+                    <p class="text-xl font-bold text-cyan-600"><?= number_format($derniere_collecte_total, 2) ?> kg</p>
                 </div>
             </div>
 
             <!-- Tableau des collectes -->
-            <div class="overflow-hidden rounded-lg shadow-lg bg-white">
+            <div class="<?=$theme['tableBg']?>">
                 <table class="w-full table-auto border-collapse">
-                    <thead class="bg-blue-800 text-white">
+                    <thead class="<?=$theme ['tableHeader']?>">
                         <tr>
                             <th class="py-3 px-4 text-left">Date</th>
                             <th class="py-3 px-4 text-left">Lieu</th>
@@ -151,9 +152,9 @@ require 'config.php';
                             <th class="py-3 px-4 text-left">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-300">
+                    <tbody class="divide-y divide-cyan-800">
                         <?php foreach ($collectes as $collecte): ?>
-                            <tr class="hover:bg-gray-100 transition duration-200">
+                            <tr class="hover:<?=  $theme['bgColor']?> transition duration-200">
                                 <td class="py-3 px-4"><?= date('d/m/Y', strtotime($collecte['date_collecte'])) ?></td>
                                 <td class="py-3 px-4"><?= htmlspecialchars($collecte['lieu']) ?></td>
                                 <td class="py-3 px-4">
@@ -162,15 +163,15 @@ require 'config.php';
                                 <td class="py-3 px-4"><?= number_format($collecte['total_dechets'] ?? 0, 2) ?> kg</td>
                                 <td class="py-3 px-4 flex space-x-2">
                                     <a href="collection_details.php?id=<?= $collecte['id'] ?>"
-                                        class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                                        class="<?=  $theme['buttons']?>">
                                         📄Details
                                     </a>
                                     <a href="collection_edit.php?id=<?= $collecte['id'] ?>"
-                                        class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                                        class="<?=  $theme['buttons']?>">
                                         ✏️ Modifier
                                     </a>
                                     <a href="collection_delete.php?id=<?= $collecte['id'] ?>"
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                                        class="<?=  $theme['deleteButton']?>"
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette collecte ?');">
                                         🗑️ Supprimer
                                     </a>
@@ -184,13 +185,12 @@ require 'config.php';
             <div class="mt-6 flex justify-center space-x-2">
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <a href="?page=<?= $i ?>"
-                        class="px-4 py-2 border <?= $i == $page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' ?>hover:bg-blue-400 transition">
+                        class="px-4 py-2 border <?= $i == $page ? 'bg-cyan-600 text-cyan-100' : 'bg-gray-200 text-gray-800' ?>hover:bg-blue-400 transition">
                         <?= $i ?>
                     </a>
                 <?php endfor; ?>
             </div>
     </div>
-</section>
     <script>
 function logout() {
     if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
