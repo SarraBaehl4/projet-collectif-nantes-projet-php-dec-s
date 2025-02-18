@@ -22,7 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Insérer un nouveau bénévole
         $stmt = $pdo->prepare("INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES (?,?,?,?)");//prepare la requête d'insertion
-        if (!$stmt->execute([$nom, $email, $mot_de_passe, $role])) { //exécute la requête avec les données du formulaire
+        if (
+            !$stmt->execute([
+                $nom,
+                $email,
+                password_hash($mot_de_passe, PASSWORD_DEFAULT)
+                ,
+                $role
+            ])
+        ) { //exécute la requête avec les données du formulaire
             throw new PDOException("Erreur lors de l'insertion dans la base de données.");
         }
 
@@ -53,20 +61,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Barre de navigation -->
         <nav class="bg-cyan-200 text-white w-64 p-6">
             <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
-                <ul role="list">
-                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
-                </ul>
+            <ul role="list">
+                <li role="listitem"><a href="collection_list.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-tachometer-alt mr-3"></i>
+                        Liste des collectes</a></li>
+                <li role="listitem"><a href="collection_add.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fas fa-plus-circle mr-3"></i>
+                        Ajouter une collecte</a></li>
+                <li role="listitem"><a href="volunteer_list.php"
+                        class="flex items-center py-2 px-3 hover:bg-blue-800"><i class="fa-solid fa-list mr-3"></i>
+                        Liste des bénévoles</a></li>
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                            class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800"><i
+                            class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+            </ul>
             <div class="mt-6">
-                <button onclick="logout()"
-                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2" aria-label="Déconnexion">
+                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2"
+                    aria-label="Déconnexion">
                     Déconnexion
                 </button>
             </div>
-</nav>
+        </nav>
 
         <!-- Contenu principal -->
         <section class="flex-1 p-8 overflow-y-auto">
@@ -122,10 +138,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </body>
 <script>
-function logout() {
-    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-        window.location.href = 'logout.php';
+    function logout() {
+        if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+            window.location.href = 'logout.php';
+        }
     }
-}
 </script>
+
 </html>
