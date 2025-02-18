@@ -90,9 +90,6 @@ error_reporting(E_ALL);
                     <?= htmlspecialchars($_GET['message']) ?>
                 </div>
             <?php endif; ?>
-
-
-
             <!-- Cartes d'informations par type -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <?php foreach ($dechets as $dechet): ?>
