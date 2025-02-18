@@ -16,7 +16,7 @@ require 'theme.php';
 <div class="flex h-screen">
     <!-- Barre de navigation -->
     <nav class="<?=$theme['associationName']?>">
-        <h2 class="text-2xl font-bold mb-6">Littoral Propre</h2>
+        <h2 class="text-6xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
                 <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
                 <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
