@@ -116,7 +116,7 @@ require 'theme.php';
                 <!-- Nombre total de collectes -->
                 <div class="<?=$theme['bgCard']?>">
                     <h3 class="text-xl font-semibold text-cyan-800 mb-3">Total des Collectes</h3>
-                    <p class="text-3xl font-bold text-cyan-600"><?= count($collectes) ?></p>
+                    <p class="text-3xl font-bold text-cyan-600"><?= $totalCollectes ?></p>
                 </div>
                 <!-- Bénévole Responsable -->
                 <div class="<?=$theme['bgCard']?>">
