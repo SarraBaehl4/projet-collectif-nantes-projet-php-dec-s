@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h2 class="text-6xl font-bold mb-6">Littoral Propre</h2>
                 <ul role="list">
                     <li role="listitem"><a href="collection_list.php"
-                            class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-tachometer-alt mr-3"></i>
+                            class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-list mr-3"></i>
                             Liste des collectes</a></li>
                     <li role="listitem"><a href="collection_add.php"
                             class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i>
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!-- Boutons -->
                     <div class="flex justify-end space-x-4">
                         <a href="collection_list.php" class="bg-red-700 hover:bg-red-800 text-cyan-50 px-4 py-2">Annuler</a>
-                        <button type="submit" class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2">
+                        <button type="submit" class="<?=$theme['sidebarBg']?> hover:bg-cyan-600 text-white px-4 py-2">
                             ➕ Ajouter
 
                         </button>

@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <div class="mt-6">
                         <button type="submit"
-                            class="w-full bg-cyan-200 hover:bg-cyan-600 text-white py-3 font-semibold">
+                            class="w-full <?=$theme['sidebarBg']?> hover:bg-cyan-600 text-white py-3 font-semibold">
                             Ajouter le bénévole
                         </button>
                     </div>
