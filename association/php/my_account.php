@@ -1,3 +1,8 @@
+<?php
+require 'config.php';
+require 'theme.php';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,21 +12,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
 <div class="flex h-screen">
 
     <!-- Barre de navigation -->
-    <div class="bg-cyan-200 text-white w-64 p-6">
-        <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+    <div class="<?=$theme['associationName']?>">
+        <h2 class="text-6xl font-bold mb-6">Littoral Propre</h2>
             <ul role="list">
-                <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+                <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-list mr-3"></i> Liste des collectes</a></li>
+                <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
+                <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
+                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
             </ul>
         <div class="mt-6">
-            <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md">
+            <button onclick="logout()" class="<?=$theme['logout']?>">
                 Déconnexion
             </button>
         </div>
@@ -30,7 +35,7 @@
     <!-- Contenu principal -->
     <div class="flex-1 p-8 overflow-y-auto">
         <!-- Titre -->
-        <h1 class="text-4xl font-bold text-blue-800 mb-6">Paramètres</h1>
+        <h1 class="<?=$theme['h1']?>">Paramètres</h1>
 
         <!-- Message de succès ou d'erreur -->
         <div class="text-green-600 text-center mb-4" id="success-message" style="display:none;">
@@ -43,32 +48,32 @@
         <form id="settings-form" class="space-y-6">
             <!-- Champ Email -->
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="email" class="block text-sm font-medium <?=$theme['textColor']?>">Email</label>
                 <input type="email" name="email" id="email" value="exemple@domaine.com" required
-                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full p-3 border border-gray-300  focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Champ Mot de passe actuel -->
             <div>
-                <label for="current_password" class="block text-sm font-medium text-gray-700">Mot de passe
+                <label for="current_password" class="block text-sm font-medium <?=$theme['textColor']?>">Mot de passe
                     actuel</label>
                 <input type="password" name="current_password" id="current_password" required
-                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full p-3 border border-gray-300  focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Champ Nouveau Mot de passe -->
             <div>
-                <label for="new_password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                <label for="new_password" class="block text-sm font-medium <?=$theme['textColor']?>">Nouveau mot de passe</label>
                 <input type="password" name="new_password" id="new_password"
-                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full p-3 border border-gray-300  focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Champ Confirmer le nouveau Mot de passe -->
             <div>
-                <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirmer le mot de
+                <label for="confirm_password" class="block text-sm font-medium <?=$theme['textColor']?>">Confirmer le mot de
                     passe</label>
                 <input type="password" name="confirm_password" id="confirm_password"
-                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full p-3 border border-gray-300  focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Boutons -->
@@ -76,7 +81,7 @@
                 <a href="collection_list.php" class="text-sm text-blue-600 hover:underline">Retour à la liste des
                     collectes</a>
                 <button type="button" onclick="updateSettings()"
-                        class="bg-cyan-200 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg shadow-md">
+                        class="<?=$theme['buttons']?>">
                     Mettre à jour
                 </button>
             </div>

@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+require 'theme.php';
 
 // Vérifier si un ID du bénévole est fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -45,22 +46,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body class="<?=$theme['bgColor']?> && <?=$theme['textColor']?>">
 
     <div class="flex h-screen">
-        <!-- Dashboard -->
-        <div class="bg-cyan-200 text-white w-64 p-6">
-            <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+        <!-- Menu -->
+        <div class="<?=$theme['associationName']?>">
+            <h2 class="text-6xl font-bold mb-6">Littoral Propre</h2>
                 <ul role="list">
-                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-tachometer-alt mr-3"></i> Liste des collectes</a></li>
-                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
-                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
-                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+                    <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-list mr-3"></i> Liste des collectes</a></li>
+                    <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
+                    <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
+                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                    <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
                 </ul>
             <div class="mt-6">
                 <button onclick="logout()"
-                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md">
+                    class="<?=$theme['logout']?>">
                     Déconnexion
                 </button>
             </div>
@@ -68,38 +69,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Contenu principal -->
         <div class="flex-1 p-8 overflow-y-auto">
-            <h1 class="text-4xl font-bold text-blue-900 mb-6">Modifier un bénévole </h1>
+            <h1 class="<?=$theme['h1']?>">Modifier un bénévole </h1>
 
             <!-- Formulaire -->
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="<?=$theme['tableBg']?> p-6 ">
                 <form method="POST" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nom :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">Nom :</label>
                         <input type="nom" name="nom" value="<?= htmlspecialchars($benevole['nom']) ?>"
-                            required class="w-full p-2 border border-gray-300 rounded-lg">
+                            required class="w-full p-2 border border-gray-300 ">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">email :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">email :</label>
                         <input type="email" name="email" value="<?= htmlspecialchars($benevole['email']) ?>" required
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                            class="w-full p-2 border border-gray-300 ">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">mot de passe :</label>
+                        <label class="block text-sm font-medium <?=$theme['textColor']?>">mot de passe :</label>
                         <input type="password" name="mot_de_passe" value="<?= htmlspecialchars($benevole['mot_de_passe']) ?>"
-                            required class="w-full p-2 border border-gray-300 rounded-lg">
+                            required class="w-full p-2 border border-gray-300 ">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium">Rôle</label>
+                        <label class="block <?=$theme['textColor']?> font-medium">Rôle</label>
                         <select name="role"
-                            class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full mt-2 p-3 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="participant">Participant</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
                    
                     <div class="flex justify-end space-x-4">
-                        <a href="volunteer_list.php" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Annuler</a>
-                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2 rounded-lg">Modifier</button>
+                        <a href="volunteer_list.php" class="bg-gray-500 text-white px-4 py-2 ">Annuler</a>
+                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2 ">Modifier</button>
                     </div>
                 </form>
             </div>
