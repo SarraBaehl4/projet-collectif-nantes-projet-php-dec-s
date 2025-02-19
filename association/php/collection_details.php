@@ -55,7 +55,7 @@ error_reporting(E_ALL);
                     <li role="listitem"><a href="collection_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-list mr-3"></i> Liste des collectes</a></li>
                     <li role="listitem"><a href="collection_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-plus-circle mr-3"></i> Ajouter une collecte</a></li>
                     <li role="listitem"><a href="volunteer_list.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
-                    <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
+                    <li role="listitem"><a href="volunteer_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
                     <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
                 </ul>
             <div class="mt-6">
@@ -100,7 +100,7 @@ error_reporting(E_ALL);
                         <h3 class="text-xl font-semibold text-gray-800 mb-3">
                             Déchet <?= htmlspecialchars($dechet['type_dechet']) ?>
                         </h3>
-                        <p class="text-3xl font-bold text-blue-600">
+                        <p class="text-3xl font-bold text-cyan-900">
                             <?= number_format($dechet['quantite_totale'], 1) ?> kg
                         </p>
                     </div>
@@ -108,11 +108,11 @@ error_reporting(E_ALL);
             </div>
             <!-- Carte du total -->
             <div class="mb-8">
-                <div class="bg-blue-50 p-6 border-2 border-blue-600">
+                <div class="bg-cyan-50 p-6 border-2 border-cyan-900">
                     <h3 class="text-xl font-semibold text-gray-800 mb-3">
                         Total des déchets collectés
                     </h3>
-                    <p class="text-4xl font-bold text-blue-600">
+                    <p class="text-4xl font-bold text-cyan-900">
                         <?= number_format($total_dechets, 1) ?> kg
                     </p>
                 </div>

@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Si l'insertion réussit, redirige vers la page saisie formulaire
-        header("Location: user_add.php");
+        header("Location: volunteer_add.php");
         exit;
 
     } catch (PDOException $e) { // Capture les erreurs PDO
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <li role="listitem"><a href="volunteer_list.php"
                         class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i class="fa-solid fa-list mr-3"></i>
                         Liste des bénévoles</a></li>
-                <li role="listitem"><a href="user_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i
+                <li role="listitem"><a href="volunteer_add.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-user-plus mr-3"></i> Ajouter un bénévole</a></li>
                 <li role="listitem"><a href="my_account.php" class="flex items-center py-2 px-3 <?=$theme['hoverColorSidebar']?>"><i
                             class="fas fa-cogs mr-3"></i> Mon compte</a></li>
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <!-- Formulaire d'ajout -->
             <div class="<?=$theme['tableBg']?> p-6 max-w-lg mx-auto">
-                <form action="user_add.php" method="POST">
+                <form action="volunteer_add.php" method="POST">
                     <div class="mb-4">
                         <label class="block <?=$theme['textColor']?> font-medium">Nom</label>
                         <input type="text" name="nom"
