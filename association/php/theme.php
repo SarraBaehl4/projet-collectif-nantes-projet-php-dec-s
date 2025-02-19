@@ -13,7 +13,7 @@ $theme = [
         'tableBg' => 'bg-cyan-50',                                  // Couleur fond lignes de tableau
         'textCardColor' => 'text-cyan-600',                         // Couleur texte carte
         'deleteButton' => 'bg-red-700 hover:bg-red-800 text-cyan-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200', // Bouton delete
-        'buttons' => 'bg-cyan-50 hover:bg-cyan-600 text-cyan-800 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition duration-200', //autres boutons
+        'buttons' => 'bg-cyan-900 hover:bg-cyan-600 text-cyan-50 py-3 px-3 font-semibold', //autres boutons
         'logout' => 'w-full bg-red-700 hover:bg-red-800 text-cyan-100 py-2', // boutton déconnexion
         'h1' => 'text-4xl font-bold text-cyan-800 mb-6',            // H1
 
