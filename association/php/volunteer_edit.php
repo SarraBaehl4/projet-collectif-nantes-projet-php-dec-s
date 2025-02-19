@@ -20,6 +20,12 @@ if (!$benevole) {
     exit;
 }
 
+$message = "";
+// Vérifier si un message est stocké en session
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
 
 // Mettre à jour la liste des bénévoles
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -28,16 +34,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mot_de_passe = $_POST["mot_de_passe"];
     $role = $_POST["role"];
 
-    $stmt = $pdo->prepare("UPDATE benevoles SET nom = ?, email = ?, mot_de_passe = ?, role = ? WHERE id = $id");
+    // Utiliser un paramètre préparé pour l'ID et hacher le mot de passe
+    $stmt = $pdo->prepare("UPDATE benevoles SET nom = ?, email = ?, mot_de_passe = ?, role = ? WHERE id = ?");
     $stmt->execute([
         $nom,
         $email,
         password_hash($mot_de_passe, PASSWORD_DEFAULT),
-        $role
+        $role,
+        $id
     ]);
-
-    header("Location: volunteer_list.php");
-    exit;
+    
+    // Définir directement le message pour l'afficher sur cette page
+    $message = "Vos informations ont bien été mises à jour";
 }
 ?>
 
@@ -47,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier une collecte</title>
+    <title>Modifier un bénévole</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
@@ -75,7 +83,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Contenu principal -->
         <section class="flex-1 p-8 overflow-y-auto">
-            <h1 class="<?= $theme['h1'] ?>">Modifier un bénévole </h1>
+            <h1 class="<?= $theme['h1'] ?>">Modifier un bénévole</h1>
+
+            <?php if (!empty($message)) : ?>
+                <div class="text-green-600 text-center mb-4 text-lg font-semibold">
+                    <?= htmlspecialchars($message) ?>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "volunteer_list.php";
+                    }, 3000); // Redirection après 3 secondes
+                </script>
+            <?php endif; ?>
 
             <!-- Formulaire -->
             <div class="<?= $theme['tableBg'] ?> p-6">
@@ -92,15 +111,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                     <div>
                         <label class="block text-sm font-medium <?= $theme['textColor'] ?>">mot de passe :</label>
-                        <input type="password" name="mot_de_passe" value="<?= htmlspecialchars($benevole['mot_de_passe']) ?>"
+                        <input type="password" name="mot_de_passe" placeholder="Nouveau mot de passe"
                             required class="w-full p-2 border border-gray-300">
                     </div>
                     <div class="mb-4">
                         <label class="block <?= $theme['textColor'] ?> font-medium">Rôle</label>
                         <select name="role"
                             class="w-full mt-2 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="participant">Participant</option>
-                            <option value="admin">Admin</option>
+                            <option value="participant" <?= $benevole['role'] === 'participant' ? 'selected' : '' ?>>Participant</option>
+                            <option value="admin" <?= $benevole['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
                         </select>
                     </div>
 
@@ -110,8 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </form>
             </div>
+        </section>
     </div>
-    </section>
     <script>
         function logout() {
             if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
