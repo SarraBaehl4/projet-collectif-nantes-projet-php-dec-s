@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     // Mise à jour de la collecte
     $stmt = $pdo->prepare("UPDATE collectes SET date_collecte = ?, lieu = ?, id_benevole = ? WHERE id = ?");
-    $stmt->execute([$_POST["date"], $_POST["lieu"], $_POST["benevole"], $id]);
+    $stmt->execute(params: [$_POST["date"], $_POST["lieu"], $_POST["benevole"], $id]);
     // Gestion des déchets
     if (!empty($_POST["dechet"]) && !empty($_POST["quantite"])) {
         // Préparer les requêtes
